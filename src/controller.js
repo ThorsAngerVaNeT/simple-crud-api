@@ -75,13 +75,14 @@ class Controller {
   // deleting Person
   async deletePerson(id) {
     return new Promise((resolve, reject) => {
-      let person = data.find((person) => person.id === id);
-      if (!person) {
+      const personIndex = data.findIndex((person) => person.id === id);
+      if (0 > personIndex) {
         reject({
           code: HttpCodes.NOT_FOUND,
           msg: `No Person with id ${id} found!`,
         });
       }
+      data.splice(personIndex, 1);
       resolve({
         code: HttpCodes.DELETED,
       });
