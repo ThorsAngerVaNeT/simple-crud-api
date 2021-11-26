@@ -4,7 +4,7 @@
   "description": "Node.JS-RS-School-2021Q4 - Task 3 - Simple CRUD API",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start:dev": "nodemon app.js",
     "start:prod": "npm run build && node dist/bundle.js",
     "build": "webpack"
@@ -25,6 +25,8 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "jest": "^27.3.1",
+    "lb-declarative-e2e-test": "^0.5.0",
     "nodemon": "^2.0.15"
   }
 }
