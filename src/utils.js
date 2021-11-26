@@ -1,3 +1,13 @@
+const uuid = require('uuid');
+const HttpCodes = {
+  OK: 200,
+  CREATED: 201,
+  DELETED: 204,
+  BAD_REQUEST: 400,
+  NOT_FOUND: 404,
+  INTERNAL_ERROR: 500,
+};
+
 getReqData = (req) => {
   return new Promise((resolve, reject) => {
     try {
@@ -6,10 +16,17 @@ getReqData = (req) => {
         body += chunk.toString();
       });
       req.on('end', () => {
-        resolve(body);
+        if ('' != body) {
+          resolve(body);
+        } else {
+          reject({
+            code: HttpCodes.BAD_REQUEST,
+            msg: 'Request body is missing!',
+          });
+        }
       });
     } catch (error) {
-      reject(error);
+      reject({ code: HttpCodes.INTERNAL_ERROR, msg: error.message });
     }
   });
 };
@@ -26,22 +43,45 @@ formatResponse = (code, msg) => {
 
 validateData = (person) => {
   return new Promise((resolve, reject) => {
+    delete person.id;
     if (!person.name || !person.age || !person.hobbies) {
-      reject({ error: `Name, age and hobbies are required!` });
+      reject({
+        code: HttpCodes.BAD_REQUEST,
+        msg: `Name, age and hobbies are required!`,
+      });
     }
-    // console.log(Array.isArray(person.hobbies));
     if ('string' !== typeof person.name) {
-      reject({ error: `Name must be a string!` });
+      reject({
+        code: HttpCodes.BAD_REQUEST,
+        msg: `Name must be a string!`,
+      });
     }
     if ('number' !== typeof person.age) {
-      reject({ error: `Age must be a number!` });
+      reject({
+        code: HttpCodes.BAD_REQUEST,
+        msg: `Age must be a number!`,
+      });
     }
     if (!Array.isArray(person.hobbies)) {
-      reject({ error: `Hobbies must be an array!` });
+      reject({
+        code: HttpCodes.BAD_REQUEST,
+        msg: `Hobbies must be an array!`,
+      });
     }
-    // person['completed'] = true;
     resolve(person);
   });
 };
 
-module.exports = { getReqData, formatResponse, validateData };
+validateId = (id) => {
+  return new Promise((resolve, reject) => {
+    if (!uuid.validate(id)) {
+      reject({
+        code: HttpCodes.BAD_REQUEST,
+        msg: `Person's UUID is not correct!`,
+      });
+    }
+    resolve(true);
+  });
+};
+
+module.exports = { getReqData, formatResponse, validateData, validateId };

@@ -1,11 +1,24 @@
 const uuid = require('uuid');
+const HttpCodes = {
+  OK: 200,
+  CREATED: 201,
+  DELETED: 204,
+  BAD_REQUEST: 400,
+  NOT_FOUND: 404,
+  INTERNAL_ERROR: 500,
+};
 
 let data = [];
 
 class Controller {
   // getting all Persons
   async getPersons() {
-    return new Promise((resolve, _) => resolve(data));
+    return new Promise((resolve, _) =>
+      resolve({
+        code: HttpCodes.OK,
+        msg: data,
+      })
+    );
   }
 
   // getting a single person
@@ -13,9 +26,15 @@ class Controller {
     return new Promise((resolve, reject) => {
       let person = data.find((person) => person.id === id);
       if (person) {
-        resolve(person);
+        resolve({
+          code: HttpCodes.OK,
+          msg: person,
+        });
       } else {
-        reject(`Person with id ${id} not found!`);
+        reject({
+          code: HttpCodes.NOT_FOUND,
+          msg: `Person with id ${id} not found!`,
+        });
       }
     });
   }
@@ -28,19 +47,28 @@ class Controller {
         ...person,
       };
       data.push(newPerson);
-      resolve(newPerson);
+      resolve({
+        code: HttpCodes.CREATED,
+        msg: newPerson,
+      });
     });
   }
 
   // updating person
-  async updatePerson(id) {
+  async updatePerson(id, updateData) {
     return new Promise((resolve, reject) => {
-      let person = data.find((person) => person.id === id);
-      if (!person) {
-        reject(`No Person with id ${id} found`);
+      const personIndex = data.findIndex((person) => person.id === id);
+      if (0 > personIndex) {
+        reject({
+          code: HttpCodes.NOT_FOUND,
+          msg: `No Person with id ${id} found!`,
+        });
       }
-      // person['completed'] = true;
-      resolve(person);
+      data[personIndex] = { id: id, ...updateData };
+      resolve({
+        code: HttpCodes.OK,
+        msg: data[personIndex],
+      });
     });
   }
 
@@ -49,9 +77,14 @@ class Controller {
     return new Promise((resolve, reject) => {
       let person = data.find((person) => person.id === id);
       if (!person) {
-        reject(`No Person with id ${id} found`);
+        reject({
+          code: HttpCodes.NOT_FOUND,
+          msg: `No Person with id ${id} found!`,
+        });
       }
-      resolve(`Person deleted successfully`);
+      resolve({
+        code: HttpCodes.DELETED,
+      });
     });
   }
 }
