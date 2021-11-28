@@ -93,6 +93,7 @@ describe('Hacker scope - E2E API Tests', function () {
 
     it('should delete second person by id and return 204', async () => {
       const res = await request.delete('/' + personIds[1]);
+      personIds.splice(1, 1);
       expect(res.status).toEqual(204);
       expect(res.body).toEqual('');
     });
@@ -102,6 +103,63 @@ describe('Hacker scope - E2E API Tests', function () {
       expect(res.status).toEqual(200);
       expect(res.body.length).toEqual(2);
       expect(res.body[1].hobbies).not.toEqual(['computers', '1', '2']);
+    });
+
+    it('should delete two last persons', async () => {
+      for (let i = 0; i < personIds.length; i++) {
+        const res = await request.delete('/' + personIds[i]);
+        expect(res.status).toEqual(204);
+        expect(res.body).toEqual('');
+      }
+    });
+  });
+
+  describe('Third scenario - Create New Persons => Update with empty body => Duplicate person => Read All (2 persons)', function () {
+    let duplicateData;
+
+    it('should create new persons', async () => {
+      const res = await request.post('/').send(createData);
+      expect(res.status).toEqual(201);
+      expect(res.body).toEqual(
+        expect.objectContaining({ id: expect.any(String), ...createData })
+      );
+      duplicateData = res.body;
+      console.log(duplicateData);
+    });
+
+    it('should return error msg', async () => {
+      const res = await request.put('/' + duplicateData.id).send('');
+      console.log(res.body);
+      expect(res.status).toEqual(400);
+      expect(res.body).toEqual({ error: `Request body is missing!` });
+    });
+
+    it('should duplicate person with another id', async () => {
+      const res = await request.post('/').send(duplicateData);
+      expect(res.status).toEqual(201);
+      expect(res.body.id).not.toEqual(duplicateData.id);
+      expect(res.body).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: duplicateData.name,
+          age: duplicateData.age,
+          hobbies: duplicateData.hobbies,
+        })
+      );
+    });
+
+    it('should return array of two same persons with different ids', async () => {
+      const res = await request.get('/');
+      expect(res.status).toEqual(200);
+      expect(res.body.length).toEqual(2);
+      expect(res.body[0].id).not.toEqual(res.body[1].id);
+      expect(res.body[0]).toEqual(
+        expect.objectContaining({
+          name: res.body[1].name,
+          age: res.body[1].age,
+          hobbies: res.body[1].hobbies,
+        })
+      );
     });
   });
 });

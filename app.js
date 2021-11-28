@@ -37,7 +37,6 @@ try {
                 res.end(JSON.stringify(person.msg));
               }
             } catch (getError) {
-              console.log(getError);
               if (getError.code) {
                 res.writeHead(getError.code);
                 res.end(JSON.stringify({ error: getError.msg }));
@@ -83,7 +82,6 @@ try {
               res.writeHead(person.code);
               res.end(JSON.stringify(person.msg));
             } catch (updateErr) {
-              console.log(updateErr);
               if (updateErr.code) {
                 res.writeHead(updateErr.code);
                 res.end(JSON.stringify({ error: updateErr.msg }));
