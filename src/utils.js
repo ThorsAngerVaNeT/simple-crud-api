@@ -62,10 +62,13 @@ validateData = (person) => {
         msg: `Age must be a number!`,
       });
     }
-    if (!Array.isArray(person.hobbies)) {
+    if (
+      !Array.isArray(person.hobbies) ||
+      !person.hobbies.every((i) => typeof i === 'string')
+    ) {
       reject({
         code: HttpCodes.BAD_REQUEST,
-        msg: `Hobbies must be an array!`,
+        msg: `Hobbies must be an array of strings or empty array!`,
       });
     }
     resolve(person);
