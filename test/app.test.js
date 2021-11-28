@@ -38,7 +38,6 @@ describe('Hacker scope - E2E API Tests', function () {
 
     it('should return created object of person with id', async () => {
       const res = await request.post('/person').send(createData);
-      console.log(res.body);
       expect(res.status).toEqual(201);
       expect(res.body).toEqual(
         expect.objectContaining({ id: expect.any(String), ...createData })
@@ -105,7 +104,6 @@ describe('Hacker scope - E2E API Tests', function () {
       const res = await request.get('/person');
       expect(res.status).toEqual(200);
       expect(res.body.length).toEqual(3);
-      // console.log(res.body);
     });
 
     it('should delete second person by id and return 204', async () => {
@@ -141,12 +139,10 @@ describe('Hacker scope - E2E API Tests', function () {
         expect.objectContaining({ id: expect.any(String), ...createData })
       );
       duplicateData = res.body;
-      console.log(duplicateData);
     });
 
     it('should return error msg', async () => {
       const res = await request.put('/person/' + duplicateData.id).send('');
-      console.log(res.body);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({ error: `Request body is missing!` });
     });

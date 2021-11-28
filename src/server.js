@@ -73,7 +73,6 @@ const startServer = () => {
               res.writeHead(person.code);
               res.end(JSON.stringify(person.msg));
             } catch (updateErr) {
-              console.log(updateErr);
               if (updateErr.code) {
                 res.writeHead(updateErr.code);
                 res.end(JSON.stringify({ error: updateErr.msg }));
