@@ -16,16 +16,42 @@ To run this API server, you must do the following steps:
 
 1. Clone this repository and switch branch to task3-simple-crud-api.
 2. Run the command line and go to the created folder.
-3. Install dependepncies by entering the command "npm install" or "npm i" and wait command to complete.
-4. Run command "npm run start:dev" to run API server in development mode or "npm run start:prod" to build and run in production mode.
+3. Install dependepncies by entering the command
+    ```
+    npm install or npm i
+    ``` 
+4. Use those commands to run API server in development mode
+    ```
+    npm run start:dev
+    ```
+
+    or to build and run in production mode
+    ```
+    npm run start:prod
+    ```
 
 ---
 
 ## How to use
 
-Send your requests to url http://localhost:3000/person (you can use Postman).
+Send your requests to url 
+```
+http://localhost:3000/person
+```
+3000 is port by default, you can change it in .env file.
+
+You can use Postman App or Thunder Client extenion for VSCode to send request to the server. 
 
 Body of POST and PUT object must have JSON body with:
   * `name` — person's name (`string`, **required**)
   * `age` — person's age (`number`, **required**)
   * `hobbies` — person's hobbies (`array` of `strings` or empty `array`, **required**)
+
+---
+
+## Testing
+You don't need to start server in additional terminal window. Just run test by command:
+
+```
+npm run test
+```
