@@ -18,7 +18,7 @@ To run this API server, you must do the following steps:
 2. Run the command line and go to the created folder.
 3. Install dependepncies by entering the command
     ```
-    npm install or npm i
+    npm install
     ``` 
 4. Use those commands to run API server in development mode
     ```
