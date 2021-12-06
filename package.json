@@ -1,0 +1,34 @@
+{
+  "name": "simple-crud-api",
+  "version": "1.0.0",
+  "description": "Node.JS-RS-School-2021Q4 - Task 3 - Simple CRUD API",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest",
+    "start:dev": "nodemon app.js",
+    "start:prod": "npm run build && node dist/bundle.js",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThorsAngerVaNeT/simple-crud-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThorsAngerVaNeT/simple-crud-api/issues"
+  },
+  "homepage": "https://github.com/ThorsAngerVaNeT/simple-crud-api#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
+  }
+}
